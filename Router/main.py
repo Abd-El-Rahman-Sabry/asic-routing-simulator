@@ -16,7 +16,7 @@ LAYERS = 4
 
 WIDTH = SCREEN_WIDTH // ROWS 
 
-CELL_HEIGTH = 3
+CELL_HEIGTH = 1
 
 CELL_MIN_WIDTH = 1 
 CELL_MAX_WIDTH = 2 
@@ -504,7 +504,7 @@ def main():
 
     current_layer = 0 
 
-    draw_random_cell(grid) 
+    #draw_random_cell(grid) 
     while running: 
 
         drawer(grid , current_layer)
