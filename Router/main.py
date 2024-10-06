@@ -525,12 +525,10 @@ def main():
                 elif end is None and start is not None: 
                     clicked_tile.color = colors.BLUE
                     end = [clicked_tile] 
-                    time.sleep(1.5) 
 
                 else :
                     clicked_tile.color = colors.BLUE 
                     end.append(clicked_tile)    
-                    time.sleep(1.5) 
 
 
             if event.type == pygame.KEYDOWN:
