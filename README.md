@@ -18,8 +18,8 @@
 
 ## How to use 
 
-[1] Select the starting tile 
-[2] Select the final tiles 
-[3] Press Space to start routing 
+1. Select the starting tile 
+2. Select the final tiles 
+3. Press Space to start routing 
 
 
