@@ -10,15 +10,6 @@ GRID_COLOR = (126, 126, 126)
 WIN = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
 
-class Router:
-
-    def __init__(self):
-        pass
-
-    def route(self):
-        pass
-
-
 class RouterMainWindow:
 
     def __init__(

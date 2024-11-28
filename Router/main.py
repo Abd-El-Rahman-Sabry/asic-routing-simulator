@@ -1,5 +1,5 @@
-import time
 import colors
+import pygame 
 from enum import Enum
 
 from visualizer import *
@@ -505,7 +505,6 @@ def drawer(grid, current_layer):
                 tile.draw()
     # router.draw_grid(ROWS * 2 , SCREEN_WIDTH , color=colors.GOLDENROD)
     router.draw_grid(ROWS // CELL_HEIGTH, SCREEN_WIDTH)
-
     draw_ui(current_layer)
 
     pygame.display.update()
@@ -616,7 +615,7 @@ def main():
                             paths += p
 
                         paths = list(set(paths))
-
+ 
                         for p in paths:
                             p.state = TileState.barrier
                             p.make_path()
