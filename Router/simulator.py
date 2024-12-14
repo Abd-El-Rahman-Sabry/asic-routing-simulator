@@ -1,5 +1,6 @@
 import colors
 from config import LAYERS, ROWS, SCREEN_WIDTH
+from graphics import Graphics
 from grid import Grid 
 import pygame
 from initializer import Initializer
@@ -16,11 +17,11 @@ class RouterSimulation:
         self._current_layer = 0 
         self._router : Router = router
         RouterSimulation.update_method = self._drawer_stack  
+        Graphics.update = self._drawer_stack
 
     def _drawer_stack(self):
-        Initializer.win.fill(colors.WHITE)
-
-        self._ui.draw_grid() 
+        Initializer.win.fill(colors.SLATE_GRAY)
+        self._ui.draw_grid(color = (100 ,0 ,0 , 0 )) 
         self._grid.draw() 
         self._ui.draw_ui() 
 
@@ -54,7 +55,7 @@ class RouterSimulation:
         start = None 
         end = None 
 
-        edge_trigger = True  
+        edge_trigger_flg = True  
         
         while running:
 
@@ -65,7 +66,7 @@ class RouterSimulation:
                     running = False
 
                 if pygame.mouse.get_pressed()[0]:
-                    if edge_trigger : 
+                    if edge_trigger_flg : 
                         pos = pygame.mouse.get_pos()
                         r, c = RouterSimulation.get_clicked_tile(pos, ROWS, SCREEN_WIDTH)
                         clicked_tile = self._grid.layers()[self._current_layer][r][c]
@@ -82,9 +83,9 @@ class RouterSimulation:
                             clicked_tile.color = colors.BLUE
                             end.append(clicked_tile)
 
-                        edge_trigger = False 
+                        edge_trigger_flg = False 
                 else : 
-                    edge_trigger = True 
+                    edge_trigger_flg = True 
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
