@@ -2,13 +2,13 @@
 from initializer import Initializer
 from simulator import RouterSimulator
 from grid import CrossGrid
-from router import AStarRouter
+from router import AStarRouter , MazeRouter , DijkstraRouter
 
 
 def entry_point():
     Initializer()
     grid = CrossGrid()
-    router = AStarRouter(grid,) 
+    router = DijkstraRouter(grid,) 
     sim = RouterSimulator(grid , router) 
     sim.loop() 
     

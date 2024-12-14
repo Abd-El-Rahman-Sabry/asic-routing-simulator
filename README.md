@@ -1,95 +1,87 @@
 
-# Digital IC Router Simulator and Visualizer
+# ASIC Routing Visualization Tool
 
 ## Overview
-The **Digital IC Router Simulator and Visualizer** is an advanced tool designed to simulate the routing of digital Integrated Circuits (ICs) and visualize the various processes involved in their routing. This tool helps in understanding and optimizing the layout of ICs, ensuring efficient design and reduced errors in complex systems.
 
-### Key Features:
-- **Real-time Routing Simulation**: Simulates the routing process of digital ICs in real-time.
-- **Visualizer**: Provides a graphical representation of the IC's routing, including wire paths, connection points, and pin configurations.
-- **Interactive Interface**: Users can interact with the layout, modify design elements, and visualize the effects of changes.
-- **Customizable Parameters**: Tailor the simulation settings to your specific IC design needs (e.g., layer configuration, wire width, etc.).
-- **Error Detection**: Identifies potential design errors such as cross-talk, signal integrity issues, and routing violations.
-  
-## Technologies Used
-- **Programming Language**: Python / C++ / JavaScript (choose the one you used)
-- **Libraries & Frameworks**: 
-  - [Tkinter](https://docs.python.org/3/library/tkinter.html) (for GUI in Python) / [Qt](https://www.qt.io/) (for C++)
-  - [Matplotlib](https://matplotlib.org/) (for visualization) / [D3.js](https://d3js.org/) (for web-based projects)
-  - [NumPy](https://numpy.org/) (for numerical calculations)
-  - [NetworkX](https://networkx.github.io/) (for graph-based routing algorithms)
-  
+The **ASIC Routing Visualization Tool** is an interactive educational platform designed to help users understand and visualize the detailed routing process in digital ASIC (Application-Specific Integrated Circuit) design. This tool is primarily aimed at educators, students, and professionals looking to deepen their understanding of the digital ASIC flow, focusing on the routing phase, which is critical for ensuring optimal chip performance.
+
+## Features
+
+- **Interactive Visualization**: View the detailed routing layout in a visual format, allowing you to explore the paths and connections within an ASIC design.
+- **Educational Focus**: The tool is tailored to help users learn and understand the complex routing process in digital ASIC design.
+- **Real-time Updates**: See routing updates in real-time as you make changes to the design or rerun the routing process.
+- **Customizable Layers**: Visualize routing across multiple layers, including the ability to highlight layer transitions and routing obstacles.
+- **Extendable Architecture**: Designed with extensibility in mind, allowing easy addition of new features and algorithms.
+- **Cross-Platform Support**: Compatible with both Windows and macOS systems.
+
 ## Installation
 
 ### Prerequisites
-Make sure you have the following installed:
-- Python 3.x or above (if applicable)
-- C++/JavaScript development environment (if applicable)
 
-### Install Dependencies
-To install required Python dependencies, run:
+Ensure that you have the following installed on your machine:
+
+- Python 3.x
+- Pygame (for visualization)
+- Any other libraries or tools (list them here)
+
+### Clone the repository
+
+To get started with the tool, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/your-username/asic-routing-visualization.git
+cd asic-routing-visualization
+```
+
+### Install dependencies
+
+Install the necessary Python packages:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Alternatively, if using C++ or JavaScript, ensure that the necessary libraries and tools (e.g., Qt Creator for C++, Node.js for JavaScript) are installed on your system.
-
-### Cloning the Repository
-Clone this repository to your local machine:
-
-```bash
-git clone https://github.com/your-username/ic-router-simulator.git
-cd ic-router-simulator
-```
-
-### Running the Simulator
-To run the simulator, use the following command:
-
-#### Python Version:
-
-```bash
-python main.py
-```
-
-#### C++ Version:
-
-```bash
-./ic_router_simulator
-```
-
-#### Web Version:
-
-Open `index.html` in your browser.
-
 ## Usage
 
-1. **Create a New Design**: Start by defining the specifications of the digital IC layout, including the number of layers, types of connections, and pin configuration.
-2. **Start Routing**: Use the routing interface to place wires, vias, and other components on the layout.
-3. **Simulate Routing Process**: Click on the "Simulate" button to start the routing simulation. The tool will calculate the optimal paths and visualizations.
-4. **Error Analysis**: Review the generated error reports to find any potential routing issues or design flaws.
-5. **Save and Export**: Once you're satisfied with the layout, save your design or export it in a standard format for further use in IC design software.
+1. **Launch the Tool**: Start the interactive visualization tool by running the following command:
 
-## Screenshots
-![Screenshot of IC Router Simulation](path_to_image/screenshot.png)
+    ```bash
+    python main.py
+    ```
+
+2. **Interact with the Visualization**: Use the GUI to interact with the routing visualizations, view the paths, and make adjustments as needed.
+
+3. **Explore and Experiment**: Experiment with different configurations, layer transitions, and routing algorithms to deepen your understanding of the ASIC routing process.
+
+4. **Documentation**: Detailed documentation of the underlying algorithms and routing strategies is available in the `docs` directory.
 
 ## Contributing
 
-We welcome contributions to improve the functionality of the Digital IC Router Simulator and Visualizer. To contribute:
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a pull request.
+We welcome contributions to improve and extend this tool. Whether you're fixing bugs, adding new features, or improving the documentation, your contributions are highly appreciated!
+
+### How to Contribute
+
+1. Fork the repository to your own GitHub account.
+2. Create a new branch for your feature or bugfix.
+3. Make your changes and test them thoroughly.
+4. Commit your changes with clear and concise commit messages.
+5. Push your changes and create a pull request.
+
+Please ensure your code adheres to the project's coding standards and includes tests where applicable. You can find our coding guidelines in the `CONTRIBUTING.md` file.
+
+### Issues
+
+If you find any bugs or have suggestions for improvements, please open an issue in the [Issues](https://github.com/your-username/asic-routing-visualization/issues) section of the repository.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
-- Special thanks to the authors of the libraries and tools used in this project, including [NumPy](https://numpy.org/), [NetworkX](https://networkx.github.io/), and [Matplotlib](https://matplotlib.org/).
-- Thanks to the community contributors and open-source supporters who helped improve the project.
+
+- Thanks to all contributors and supporters who help make this project possible.
+- Special thanks to the open-source community for their contributions and tools that help make this project a reality.
 
 ---
 
-For further inquiries, please contact [your email@example.com](mailto:your.email@example.com).
+Feel free to reach out if you have any questions or need assistance with the tool. Happy learning and experimenting!
