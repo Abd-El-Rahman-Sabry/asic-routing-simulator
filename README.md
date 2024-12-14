@@ -22,15 +22,15 @@ Ensure that you have the following installed on your machine:
 
 - Python 3.x
 - Pygame (for visualization)
-- Any other libraries or tools (list them here)
+
 
 ### Clone the repository
 
 To get started with the tool, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/asic-routing-visualization.git
-cd asic-routing-visualization
+git clone https://github.com/Abd-El-Rahman-Sabry/asic-routing-simulator.git
+cd asic-routing-simulator
 ```
 
 ### Install dependencies
@@ -71,7 +71,7 @@ Please ensure your code adheres to the project's coding standards and includes t
 
 ### Issues
 
-If you find any bugs or have suggestions for improvements, please open an issue in the [Issues](https://github.com/your-username/asic-routing-visualization/issues) section of the repository.
+If you find any bugs or have suggestions for improvements, please open an issue in the [Issues](https://github.com/your-username/asic-routing-simulator/issues) section of the repository.
 
 ## License
 
