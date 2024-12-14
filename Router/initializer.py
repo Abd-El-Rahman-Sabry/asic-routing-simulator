@@ -1,5 +1,5 @@
 import pygame
-from config import SCREEN_WIDTH , SCREEN_HEIGHT
+from config import SCREEN_WIDTH , SCREEN_HEIGHT, TITLE
 
 WIN = None 
 
@@ -16,6 +16,7 @@ class Initializer:
         pygame.font.init()
 
         Initializer.win = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
+        pygame.display.set_caption(TITLE)
 
 
     def __new__(cls):

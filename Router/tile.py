@@ -76,8 +76,8 @@ class Tile(Drawable):
             self.color = colors.BLACK_CONTACT
             self.height = WIDTH - 4
             self.width = WIDTH - 4
-            self.y = self.__col * self.__width - padding + 2
-            self.x = self.__row * self.__width - padding + 2
+            self.y = self.__col * self.__width - padding  + 2
+            self.x = self.__row * self.__width  - padding + 2
 
         if self.__type == TileType.metal:
             padding = 4
@@ -100,10 +100,6 @@ class Tile(Drawable):
 
     @type.setter
     def type(self, t: TileType) -> None:
-        if t == TileType.metal:
-            self.__padding = 4
-        else:
-            self.__padding = 0
         self.__type = t
 
     @property
@@ -133,7 +129,7 @@ class Tile(Drawable):
         return self.__neighbors
 
     @neighbors.setter
-    def neighbors(self, s: list) -> None:
+    def neighbors(self, s: list):
         self.__neighbors = s
 
     def clear_neighbors(self): 

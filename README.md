@@ -93,10 +93,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 For further inquiries, please contact [your email@example.com](mailto:your.email@example.com).
-
-### Customization:
-- Replace placeholders like `your-username`, `path_to_image/screenshot.png`, and `your.email@example.com` with your actual details.
-- If you're using other libraries or technologies, modify the `Technologies Used` and `Installation` sections accordingly.
-- Add or modify any other sections specific to your project’s unique features or requirements.
-
-This markdown will help in presenting your project in a professional and structured way for documentation, GitHub repositories, or project submissions.

@@ -1,5 +1,4 @@
 import pygame
-import colors
 
 
 SCREEN_WIDTH = 600
