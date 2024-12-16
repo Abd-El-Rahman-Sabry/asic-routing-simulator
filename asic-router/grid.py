@@ -56,6 +56,7 @@ class Grid(Drawable):
                     if tile.state == TileState.closed or tile.state == TileState.open:
                         tile.set_idle_state()
 
+
     def draw(self):
         """
         Draws all tiles in the grid.

@@ -1,7 +1,8 @@
-from drawable import Drawable
+from drawable import Drawable, DrawableShape
 from enum import Enum
 import colors
-from config import WIDTH, layer_color_map
+from config import PADDING, WIDTH, layer_color_map
+from graphics import Graphics
 
 class LayerOrientation(Enum):
     """
@@ -10,9 +11,11 @@ class LayerOrientation(Enum):
     Attributes:
         horizontal (int): Indicates a horizontal layer orientation.
         vertical (int): Indicates a vertical layer orientation.
+        both (int): Indicates a layer that can route a net in both orientations horizontal and vertical.
     """
     horizontal = 0
     vertical = 1
+    both = 2
 
 
 class TileState(Enum):
@@ -24,8 +27,8 @@ class TileState(Enum):
         closed (int): Represents a tile that is closed.
         open (int): Represents a tile that is open.
         barrier (int): Represents a tile that is a barrier.
-        start (int): Represents a tile designated as the start.
-        end (int): Represents a tile designated as the end.
+        start (int): Represents a tile designated as the start of a route.
+        end (int): Represents a tile designated as the end of a route.
     """
     idle = 0
     closed = 1
@@ -150,7 +153,7 @@ class Tile(Drawable):
             self.x = self.__row * self.__width - padding + 2
 
         elif self.__type == TileType.metal:
-            padding = 4
+            padding = PADDING
             if self.__layer.orientation == LayerOrientation.vertical:
                 self.height = self.__width - 2 * padding
                 self.y = self.__col * self.__width + padding
@@ -160,6 +163,16 @@ class Tile(Drawable):
 
         # Draw the tile if it has a color
         if self.color is not None:
+            if self.state == TileState.start: 
+                Graphics.draw_text("Start" , self.x , self.y  - 10 , 14)
+                self.shape = DrawableShape.circle 
+
+            elif self.state == TileState.end: 
+                Graphics.draw_text("End" , self.x , self.y  - 10 , 14)
+                self.shape = DrawableShape.circle 
+            else : 
+                self.shape = DrawableShape.rect
+
             return super().draw()
 
     @property

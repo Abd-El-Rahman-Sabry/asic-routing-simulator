@@ -6,6 +6,8 @@ from tile import Tile, TileState, TileType
 from grid import Grid
 from collections import deque
 
+from ui import UI
+
 class Router:
     """
     Base class for a routing algorithm.
@@ -23,7 +25,7 @@ class Router:
             grid (Grid): The grid object representing the routing area.
         """
         self._grid: Grid = grid
-        self._show_updates = True
+        self._show_updates = False
 
     def route(self, start, end):
         """
@@ -134,6 +136,9 @@ class Router:
             path (list[Tile]): The path to process.
             fan_out (bool, optional): Whether this is for a fan-out route. Defaults to False.
         """
+        if not path: 
+            return
+        
         if path[0].type == TileType.metal:
             path[0].type = TileType.contact
             path[0].state = TileState.barrier
@@ -156,7 +161,11 @@ class Router:
         Args:
             start (Tile): The starting tile.
             ends (list[Tile]): List of endpoint tiles.
+        
         """
+        
+
+
         # Initialize grid neighbors
         for grid_layer in self._grid.layers():
             for row in grid_layer:
@@ -167,8 +176,9 @@ class Router:
         fan_out_list = []
         temp_paths = []
 
+        UI.update.set_status("Finding best route !")
         for end in ends:
-            p = self.route(start, end, True)
+            p = self.route(start, end, self._show_updates)
             temp_paths += [p]
 
         i, first_opt_path = self.__find_opt_path(temp_paths)
@@ -186,14 +196,20 @@ class Router:
                 for v_start in fan_out_list:
                     p = self.route(v_start, e, False)
                     all_paths += [p]
-                    Graphics.line(v_start, e, 75, abs(self.__calc_cost(p) - 30) / 20 * 255)
+                    UI.update.set_status("Finding minimum cost Fan out")
+                    if self._show_updates:
+                        Graphics.line(v_start, e, 75, abs(self.__calc_cost(p) - 30) / 20 * 255)
+                
+                if not all_paths: 
+                    continue
                 i, opt_path = self.__find_opt_path(all_paths)
                 self.__build_path_tiles(opt_path)
                 fan_out_list[i].type = TileType.contact
                 fan_out_list += opt_path
                 paths += [opt_path]
-                Graphics.visualize_path(fan_out_list)
-                Graphics.update()
+                if self._show_updates:
+                    Graphics.visualize_path(fan_out_list)
+                    Graphics.update()
 
         # Mark contacts on top layer
         top = LAYERS - 1
@@ -207,7 +223,9 @@ class Router:
         for path in paths:
             self.__build_path_tiles(path)
 
-    def reconstruct_path(self, came_from, current, show_update=False) -> list[Tile]:
+        UI.update.set_status("Done !")
+
+    def reconstruct_path(self, came_from, current, show_update=None) -> list[Tile]:
         """
         Reconstruct the path from a dictionary of visited tiles.
 
@@ -219,6 +237,9 @@ class Router:
         Returns:
             list[Tile]: The reconstructed path.
         """
+        if show_update is None: 
+            show_update = self._show_updates 
+
         path = [current]
         while current in came_from:
             current = came_from[current]
@@ -266,7 +287,7 @@ class AStarRouter(Router):
         x1, y1, z1 = p1
         return abs(x0 - x1) + abs(y0 - y1) + 10 * abs(z0 - z1)
 
-    def route(self, start: Tile, end: Tile, show_update=False):
+    def route(self, start: Tile, end: Tile, show_update=None):
         """
         Route between two points using A*.
 
@@ -320,6 +341,9 @@ class AStarRouter(Router):
                         visited.add(n)
                         n.set_open_state()
 
+            if show_update is None: 
+                show_update = self._show_updates
+            
             if show_update:
                 self.update()
 

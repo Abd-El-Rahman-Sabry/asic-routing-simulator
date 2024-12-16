@@ -5,8 +5,9 @@ from grid import Grid
 import pygame
 from initializer import Initializer
 from router import Router
+from tile import TileState
 from ui import UI
-
+import random 
 class RouterSimulator:
     """
     A class to simulate router operations in a grid-based layout.
@@ -84,7 +85,7 @@ class RouterSimulator:
         Decreases the current layer index to move down to the previous layer, updating the UI.
         """
         self._current_layer -= 1
-        self._current_layer = max(1, self._current_layer)
+        self._current_layer = max(0, self._current_layer)
         self._ui.update_current_layer(self._current_layer)
         self._ui.draw_ui()
 
@@ -106,6 +107,48 @@ class RouterSimulator:
         col = y // gap
         row = x // gap
         return row % rows, col % rows
+    
+    def generate_routes(self): 
+        self._router.disable_graphics_updates() 
+        for i in range(3): 
+            print(i)
+            x  = random.randint(0 , ROWS -1 )
+            y  = random.randint(0 , ROWS -1 )
+            z  = random.randint(0 , LAYERS -1 )
+
+            start = self._grid.layers()[z][x][y]
+
+            if start.state == TileState.barrier: 
+                continue 
+
+            count_end = random.randint(1 , 10)
+            print(count_end)
+            ends = []
+
+            for i in range(count_end): 
+
+                            x  = random.randint(0 , ROWS -1 )
+                            y  = random.randint(0 , ROWS -1 )
+                            z  = random.randint(0 , LAYERS -1 )
+
+                            tile = self._grid.layers()[z][x][y]
+
+                            if tile.state == TileState.barrier: 
+                                continue 
+                            else : 
+                                ends.append(tile)
+            print(ends)
+            if len(ends) == 0 : 
+                continue 
+
+            self._router.fan_out_route(start , ends)
+
+            self._ui.set_status(f"currently building a random route {i /10 }%")
+            
+
+
+
+            
 
     def loop(self):
         """
@@ -135,13 +178,16 @@ class RouterSimulator:
                         if start is None:
                             clicked_tile.color = colors.RED
                             start = clicked_tile
+                            start.state = TileState.start
 
                         elif end is None and start is not None:
                             clicked_tile.color = colors.BLUE
                             end = [clicked_tile]
+                            clicked_tile.state = TileState.end
 
                         else:
                             clicked_tile.color = colors.BLUE
+                            clicked_tile.state = TileState.end
                             end.append(clicked_tile)
 
                         edge_trigger_flg = False 
@@ -154,8 +200,14 @@ class RouterSimulator:
                     if event.key == pygame.K_DOWN:
                         self.bottm_layer()
 
+                    if event.key == pygame.K_q: 
+                        self.generate_routes() 
+
                     if event.key == pygame.K_SPACE:
                         self._router.fan_out_route(start, end)
+                        start.state = TileState.barrier
+                        for e in end: 
+                            e.state = TileState.barrier     
                         start = None
                         end = None
             pygame.display.update()

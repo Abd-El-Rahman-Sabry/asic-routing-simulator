@@ -7,7 +7,7 @@ import colors
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
 
-ROWS = 50
+ROWS = 30
 WIDTH = SCREEN_WIDTH // ROWS
 
 TITLE = "Router"
@@ -22,7 +22,7 @@ LAYERS = 4
 CELL_HEIGTH = 1
 CELL_MIN_WIDTH = 1
 CELL_MAX_WIDTH = 2
-
+PADDING = 6
 
 # Layers Colors
 

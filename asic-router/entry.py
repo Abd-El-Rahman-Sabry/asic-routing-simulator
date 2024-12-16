@@ -8,7 +8,7 @@ from router import AStarRouter , MazeRouter , DijkstraRouter
 def entry_point():
     Initializer()
     grid = CrossGrid()
-    router = DijkstraRouter(grid,) 
+    router = AStarRouter(grid,) 
     sim = RouterSimulator(grid , router) 
     sim.loop() 
     

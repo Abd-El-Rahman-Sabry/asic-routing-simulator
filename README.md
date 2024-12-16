@@ -46,7 +46,7 @@ pip install -r requirements.txt
 1. **Launch the Tool**: Start the interactive visualization tool by running the following command:
 
     ```bash
-    python main.py
+    python entry.py
     ```
 
 2. **Interact with the Visualization**: Use the GUI to interact with the routing visualizations, view the paths, and make adjustments as needed.

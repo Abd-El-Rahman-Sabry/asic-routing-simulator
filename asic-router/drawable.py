@@ -1,6 +1,11 @@
 import colors
 import pygame
 from initializer import Initializer
+from enum import Enum
+
+class DrawableShape(Enum): 
+    rect    = 0
+    circle  = 1 
 
 
 class Drawable:
@@ -30,6 +35,7 @@ class Drawable:
         self.__width: float = width
         self.__height: float = height
         self.__color: tuple[int, int, int] = colors.WHITE
+        self.__shape = DrawableShape.rect
 
     @property
     def color(self):
@@ -50,6 +56,26 @@ class Drawable:
             new_color (tuple[int, int, int]): The new RGB color.
         """
         self.__color = new_color
+
+    @property
+    def shape(self):
+        """
+        Returns the current shape of the object.
+
+        Returns:
+            DrawableShape: enum value of the shape to be drawn.
+        """
+        return self.__shape
+
+    @shape.setter
+    def shape(self, new_shape: DrawableShape) -> None:
+        """
+        Sets a new shape for the object.
+
+        Args:
+            new_color DrawbleShape: The new shape.
+        """
+        self.__shape = new_shape
 
     @property
     def x(self):
@@ -134,7 +160,15 @@ class Drawable:
     def draw(self):
         """
         Draws the object as a rectangle on the screen using Pygame.
+        
         """
-        pygame.draw.rect(
-            Initializer.win, self.color, (self.x, self.y, self.width, self.height), border_radius=0
-        )
+        if self.__shape == DrawableShape.rect:
+            pygame.draw.rect(
+                Initializer.win, self.color, (self.x, self.y, self.width, self.height), border_radius=0
+            )
+
+        elif self.__shape == DrawableShape.circle: 
+            shift =8
+            pygame.draw.circle(Initializer.win , self.color ,(self.x + shift - 1, self.y + shift + 2) , shift - 2)
+
+        
