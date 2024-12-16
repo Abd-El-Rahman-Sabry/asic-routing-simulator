@@ -1,5 +1,6 @@
 
 # ASIC Routing Visualization Tool
+![image](https://github.com/user-attachments/assets/d5801eb8-4e75-4e63-8aa5-19313de45bcb)
 
 ## Overview
 
