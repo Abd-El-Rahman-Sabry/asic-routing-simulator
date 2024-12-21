@@ -31,7 +31,7 @@ To get started with the tool, clone the repository to your local machine:
 
 ```bash
 git clone https://github.com/Abd-El-Rahman-Sabry/asic-routing-simulator.git
-cd asic-routing-simulator
+cd asic-routing-simulator/asic-router
 ```
 
 ### Install dependencies
