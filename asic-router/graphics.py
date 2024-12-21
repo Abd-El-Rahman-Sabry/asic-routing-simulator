@@ -2,6 +2,7 @@
 
 import colors
 from config import WIDTH
+import config
 from initializer import Initializer
 import pygame 
 import time 
@@ -19,7 +20,7 @@ class Graphics:
         x_e , y_e= e.get_cordinates()
         shift = WIDTH / 2
         win = Initializer.win
-        pygame.draw.line(win , (color if color <= 255 else 255 , 0 , 0) , (x_s + shift , y_s  + shift), (x_e + shift , y_e + shift)) 
+        pygame.draw.line(win , (color if color <= 255 else 255 , 0 , 0) , (x_s + shift , y_s  + shift), (x_e + shift , y_e + shift) , config.LINE_WIDTH) 
         pygame.display.update()
         time.sleep(mili_sec_delay/1000)
 

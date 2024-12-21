@@ -240,7 +240,7 @@ class Tile(Drawable):
 
     def set_open_state(self):
         self.color = colors.GREEN
-        self.__state = TileState.open
+        #self.__state = TileState.open
 
     def set_start_state(self):
         self.__state = TileState.start
@@ -323,6 +323,7 @@ class Tile(Drawable):
             )
 
     def reset(self):
+        self.color = None
         self.__state = TileState.idle
 
 

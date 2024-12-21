@@ -53,8 +53,10 @@ class Grid(Drawable):
         for grid_layer in self._grid:
             for row in grid_layer:
                 for tile in row:
-                    if tile.state == TileState.closed or tile.state == TileState.open:
+                    if tile.state == TileState.closed or tile.state == TileState.open :
                         tile.set_idle_state()
+                    elif tile.state == TileState.end or tile.state == TileState.start: 
+                        pass 
 
 
     def draw(self):

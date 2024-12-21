@@ -1,6 +1,7 @@
 import heapq
 from queue import PriorityQueue
 from config import LAYERS
+import config
 from graphics import Graphics
 from tile import Tile, TileState, TileType
 from grid import Grid
@@ -25,7 +26,11 @@ class Router:
             grid (Grid): The grid object representing the routing area.
         """
         self._grid: Grid = grid
-        self._show_updates = False
+        self._show_updates = True
+        self.name()
+
+    def is_weighted(self): 
+        return NotImplementedError
 
     def route(self, start, end):
         """
@@ -70,11 +75,14 @@ class Router:
         Returns:
             int: The total cost of the path.
         """
+        if not self.is_weighted(): 
+            return len(path)
+
         total_cost = 0
         for i, tile in enumerate(path):
             if i > 0:
                 if path[i - 1].layer.index != path[i].layer.index:
-                    total_cost += 20  # Layer switching penalty
+                    total_cost += config.VIA_COST  # Layer switching penalty
                 else:
                     total_cost += 1  # Regular tile traversal cost
         return total_cost
@@ -106,27 +114,6 @@ class Router:
 
         return best_index, best_path
 
-    def __find_closest(self, point: Tile, others: list[Tile]) -> Tile:
-        """
-        Find the closest tile to a given point.
-
-        Args:
-            point (Tile): The reference tile.
-            others (list[Tile]): List of other tiles to compare.
-
-        Returns:
-            Tile: The closest tile to the reference point.
-        """
-        min_dist = float("inf")
-        closest: Tile = others[0]
-        x, y, z = point.get_position()
-        for tile in others:
-            x_t, y_t, z_t = tile.get_position()
-            current_dist = (x - x_t)**2 + (y - y_t)**2 + (z - z_t)**2
-            if current_dist < min_dist:
-                closest = tile
-                min_dist = current_dist
-        return closest
 
     def __build_path_tiles(self, path: list[Tile], fan_out=False):
         """
@@ -136,8 +123,10 @@ class Router:
             path (list[Tile]): The path to process.
             fan_out (bool, optional): Whether this is for a fan-out route. Defaults to False.
         """
+
         if not path: 
             return
+
         
         if path[0].type == TileType.metal:
             path[0].type = TileType.contact
@@ -176,10 +165,11 @@ class Router:
         fan_out_list = []
         temp_paths = []
 
-        UI.update.set_status("Finding best route !")
-        for end in ends:
-            p = self.route(start, end, self._show_updates)
+        UI.update.set_status(f"{self.name()} is currently running : Trying to find the best route !")
+        for i , end in enumerate(ends):
+            p = self.route(start, end, self._show_updates and i < 3)
             temp_paths += [p]
+
 
         i, first_opt_path = self.__find_opt_path(temp_paths)
         most_close = ends[i]
@@ -196,28 +186,27 @@ class Router:
                 for v_start in fan_out_list:
                     p = self.route(v_start, e, False)
                     all_paths += [p]
-                    UI.update.set_status("Finding minimum cost Fan out")
-                    if self._show_updates:
-                        Graphics.line(v_start, e, 75, abs(self.__calc_cost(p) - 30) / 20 * 255)
+                    UI.update.set_status("Constructing the minimum cost Fan out Route")
+                    Graphics.line(v_start, e, 75, abs(self.__calc_cost(p) - 30) / 20 * 255)
                 
-                if not all_paths: 
-                    continue
+                
                 i, opt_path = self.__find_opt_path(all_paths)
                 self.__build_path_tiles(opt_path)
                 fan_out_list[i].type = TileType.contact
                 fan_out_list += opt_path
                 paths += [opt_path]
-                if self._show_updates:
-                    Graphics.visualize_path(fan_out_list)
-                    Graphics.update()
+                Graphics.visualize_path(fan_out_list)
+                Graphics.update()
 
         # Mark contacts on top layer
         top = LAYERS - 1
         srow, scol, _ = start.get_position()
         self._grid.layers()[top][srow][scol].type = TileType.contact
+        self._grid.layers()[top - 1][srow][scol].type = TileType.metal
         for e in ends:
             row, col, _ = e.get_position()
             self._grid.layers()[top][row][col].type = TileType.contact
+            self._grid.layers()[top - 1 ][row][col].type = TileType.metal
 
         self.__build_path_tiles(first_opt_path)
         for path in paths:
@@ -225,7 +214,7 @@ class Router:
 
         UI.update.set_status("Done !")
 
-    def reconstruct_path(self, came_from, current, show_update=None) -> list[Tile]:
+    def reconstruct_path(self, came_from, current, show_update=False) -> list[Tile]:
         """
         Reconstruct the path from a dictionary of visited tiles.
 
@@ -237,8 +226,7 @@ class Router:
         Returns:
             list[Tile]: The reconstructed path.
         """
-        if show_update is None: 
-            show_update = self._show_updates 
+
 
         path = [current]
         while current in came_from:
@@ -270,6 +258,12 @@ class AStarRouter(Router):
     def fan_out_route(self, start, ends):
         """Perform a fan-out routing using the A* algorithm."""
         return super().fan_out_route(start, ends)
+    
+    def is_weighted(self):
+        return True
+    
+    def name(self):
+        return "A* Router"
 
     @staticmethod
     def h(p0: tuple[float, float, float], p1: tuple[float, float, float]) -> float:
@@ -285,9 +279,9 @@ class AStarRouter(Router):
         """
         x0, y0, z0 = p0
         x1, y1, z1 = p1
-        return abs(x0 - x1) + abs(y0 - y1) + 10 * abs(z0 - z1)
+        return abs(x0 - x1) + abs(y0 - y1) +   config.VIA_COST *abs(z0 - z1) 
 
-    def route(self, start: Tile, end: Tile, show_update=None):
+    def route(self, start: Tile, end: Tile, show_update=False):
         """
         Route between two points using A*.
 
@@ -340,9 +334,6 @@ class AStarRouter(Router):
                         open_set.put((f_score[n], count, n))
                         visited.add(n)
                         n.set_open_state()
-
-            if show_update is None: 
-                show_update = self._show_updates
             
             if show_update:
                 self.update()
@@ -365,6 +356,12 @@ class MazeRouter(Router):
             grid (Grid): The grid object representing the routing area.
         """
         super().__init__(grid)
+
+    def is_weighted(self):
+        return False 
+    
+    def name(self): 
+        return "Maze Router"
 
     def route(self, start: Tile, end: Tile, show_update=False):
         """
@@ -463,6 +460,32 @@ class DijkstraRouter(Router):
         """
         super().__init__(grid)
 
+
+    
+    
+    
+    
+    def is_weighted(self):
+        """
+        Check if the router uses weighted edges.
+            bool: Always returns True, indicating that the router uses weighted edges.
+        
+        """
+        
+        return True 
+    
+    def name(self): 
+
+        """
+        Returns the name of the router.
+        
+        
+        Returns:
+            str: The name of the router, which is "Dijkstra Router".
+        
+        """
+        return "Dijkstra Router"
+
     def route(self, start: Tile, end: Tile, show_update=False):
         """
         Route between two points using Dijkstra's algorithm with layer transition cost.
@@ -493,6 +516,7 @@ class DijkstraRouter(Router):
 
             # If we've reached the destination, reconstruct the path
             if current == end:
+                print(f"Current Cost at position : {end.get_position()} = {current_weighted_tile.cost}")
                 self._grid.idlize_tiles()
                 path = self.reconstruct_path(came_from, current, show_update)
                 return path
@@ -503,7 +527,7 @@ class DijkstraRouter(Router):
                     # Calculate the cost to move to the neighbor tile
                     transition_cost = 1
                     if current.layer.index != neighbor.layer.index:
-                        transition_cost = 20  # Add higher cost for layer transition
+                        transition_cost =  1/config.VIA_COST  # Add higher cost for layer transition
 
                     new_cost = current_cost + transition_cost
 

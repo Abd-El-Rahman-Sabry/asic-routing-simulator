@@ -1,5 +1,6 @@
 import colors
 from config import LAYERS, ROWS, SCREEN_WIDTH
+from from_json import RouteLoader
 from graphics import Graphics
 from grid import Grid
 import pygame
@@ -8,6 +9,10 @@ from router import Router
 from tile import TileState
 from ui import UI
 import random 
+
+from threading import Thread , Semaphore
+from control_window import ControlWindow
+
 class RouterSimulator:
     """
     A class to simulate router operations in a grid-based layout.
@@ -55,6 +60,9 @@ class RouterSimulator:
         self._router: Router = router
         RouterSimulator.update_method = self._drawer_stack
         Graphics.update = lambda: self._drawer_stack("Graphics Drawer")
+        self.__start = None
+        self.__end = None
+        self.__routes = None
 
     def _drawer_stack(self, context=""):
         """
@@ -145,6 +153,57 @@ class RouterSimulator:
 
             self._ui.set_status(f"currently building a random route {i /10 }%")
             
+    def build_control_menu(self): 
+        win = ControlWindow() 
+        win.addButton("Run" , lambda : print("Run"))
+        win.addButton("Run" , lambda : print("Run"))
+        win.addButton("Run" , lambda : print("Run"))
+        win.show_controller()
+
+    def run(self):
+        sim = Thread(target=self.loop)
+        menu = Thread(target=self.build_control_menu)
+
+        sim.start() 
+        menu.start()
+
+        sim.join()
+        menu.join()
+
+    def load_route_from_json(self, json): 
+        obj = RouteLoader(json)
+        routes = obj.routes 
+        self.__routes = routes 
+
+
+    def __apply_json_routes(self): 
+        for route in self.__routes: 
+            
+            start_point  = route[0]
+
+            x , y , layer = start_point
+
+            tile = self._grid.layers()[layer][x][y]
+
+
+            tile.state = TileState.start 
+            tile.color = colors.RED
+            self.__start = tile 
+             
+            route_ends = []
+            for end_point in route[1:]: 
+                x , y , layer = end_point
+                end_tile = self._grid.layers()[layer][x][y]
+                end_tile.color = colors.BLUE
+                end_tile.state = TileState.end 
+                route_ends.append(end_tile)
+
+            self.__end = route_ends
+
+
+        
+
+        
 
 
 
@@ -158,12 +217,13 @@ class RouterSimulator:
         when the spacebar is pressed. Mouse clicks are used to select start and end tiles for routing.
         """
         running = True
-        start = None
-        end = None
         edge_trigger_flg = True  
+
+        startup = False 
 
         while running:
             self._drawer_stack()
+
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -175,20 +235,20 @@ class RouterSimulator:
                         r, c = RouterSimulator.get_clicked_tile(pos, ROWS, SCREEN_WIDTH)
                         clicked_tile = self._grid.layers()[self._current_layer][r][c]
 
-                        if start is None:
+                        if self.__start is None:
                             clicked_tile.color = colors.RED
-                            start = clicked_tile
-                            start.state = TileState.start
+                            self.__start = clicked_tile
+                            self.__start.state = TileState.start
 
-                        elif end is None and start is not None:
+                        elif self.__end is None and self.__start is not None:
                             clicked_tile.color = colors.BLUE
-                            end = [clicked_tile]
+                            self.__end = [clicked_tile]
                             clicked_tile.state = TileState.end
 
-                        else:
+                        else: 
                             clicked_tile.color = colors.BLUE
                             clicked_tile.state = TileState.end
-                            end.append(clicked_tile)
+                            self.__end.append(clicked_tile)
 
                         edge_trigger_flg = False 
                 else:
@@ -204,12 +264,17 @@ class RouterSimulator:
                         self.generate_routes() 
 
                     if event.key == pygame.K_SPACE:
-                        self._router.fan_out_route(start, end)
-                        start.state = TileState.barrier
-                        for e in end: 
+                        self._router.fan_out_route(self.__start, self.__end)
+                        self.__start.state = TileState.barrier
+                        for e in self.__end: 
                             e.state = TileState.barrier     
-                        start = None
-                        end = None
+                        self.__start = None
+                        self.__end = None
+
+            if not startup: 
+                if self.__routes: 
+                    self.__apply_json_routes()
+                startup = True  
             pygame.display.update()
 
         pygame.quit()
