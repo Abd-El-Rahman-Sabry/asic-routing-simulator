@@ -382,7 +382,10 @@ If you find any bugs or have suggestions for improvements, please open an issue 
 ---
 
 Feel free to reach out if you have any questions or need assistance with the tool. Happy learning and experimenting!
-![61ENAXvWUnL _AC_SX679_](https://github.com/user-attachments/assets/1af5f7e7-aed7-44a2-bd58-025a1dd2e803)
-[![LinkedIn](https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo_2023.svg)](https://www.linkedin.com/in/abd-el-rahman-sabry-1025471b6)
 
+---
+
+![svgviewer-output](https://github.com/user-attachments/assets/bca2a7e5-ad2d-4fc4-8031-d2439289e7a4)
+---
+**Abd-El-Rahman Sabry 🫀**
 
