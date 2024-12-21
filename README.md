@@ -72,6 +72,10 @@ We welcome contributions to improve and extend this tool. Whether you're fixing 
 5. Push your changes and create a pull request.
 
 
+## How to Reuse this Repository  
+
+
+
 ### Functions to Implement in a Custom Router:
 
 1. **`is_weighted()`**  
@@ -226,12 +230,12 @@ class GreedyBestFirstRouter(Router):
    ```
 
 ---
+### Functions to Implement:
 
 By implementing these methods, you can create a custom router to suit specific routing scenarios, whether weighted or unweighted, heuristic-based, or otherwise.
 
 To implement a custom grid class based on the `Grid` interface, you need to define two core functions as required by the base `Grid` class: 
 
-### Functions to Implement:
 
 1. **`build_grid()`**  
    This function defines the structure of the grid. You will create layers, rows, and tiles, and append them to the `_grid` attribute of your custom class. 
