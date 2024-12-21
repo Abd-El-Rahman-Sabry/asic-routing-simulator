@@ -4,7 +4,7 @@
 
 ## Overview
 
-The **ASIC Routing Visualization Tool** is an interactive educational platform designed to help users understand and visualize the detailed routing process in digital ASIC (Application-Specific Integrated Circuit) design. This tool is primarily aimed at educators, students, and professionals looking to deepen their understanding of the digital ASIC flow, focusing on the routing phase, which is critical for ensuring optimal chip performance.
+The **ASIC Routing Visualization Tool** is an interactive educational small tool designed to help users understand and visualize the detailed routing process in digital ASIC (Application-Specific Integrated Circuit) design. This tool is primarily aimed at educators, students, and professionals looking to deepen their understanding of the digital ASIC flow, focusing on the routing phase, which is critical for ensuring optimal chip performance.
 
 ## Features
 
@@ -61,7 +61,7 @@ pip install -r requirements.txt
 
 ## Contributing
 
-We welcome contributions to improve and extend this tool. Whether you're fixing bugs, adding new features, or improving the documentation, your contributions are highly appreciated!
+Everyone is welcome for contributions to improve and extend this tool. Whether you're fixing bugs, adding new features, or improving the documentation, your contributions are highly appreciated ❤️!
 
 ### How to Contribute
 
@@ -371,13 +371,12 @@ By implementing these two functions in your custom grid, you can adapt the proje
 
 ### Issues
 
-If you find any bugs or have suggestions for improvements, please open an issue in the [Issues](https://github.com/your-username/asic-routing-simulator/issues) section of the repository.
+If you find any bugs or have suggestions for improvements, please open an issue in the [Issues](https://github.com/Abd-El-Rahman-Sabry/asic-routing-simulator/issues) section of the repository.
 
 
 ## Acknowledgments
 
-- Thanks to all contributors and supporters who help make this project possible.
-- Special thanks to the open-source community for their contributions and tools that help make this project a reality.
+- Thanks to all contributors and supporters who will help making this project possible.
 
 ---
 
