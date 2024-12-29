@@ -247,30 +247,30 @@ To implement a custom grid class based on the `Grid` interface, you need to defi
 
 ### Example of a Custom Grid Class
 
-Here is an example of how you might implement a custom `DiagonalGrid` class, where tiles are connected diagonally in addition to horizontally and vertically:
+Here is an example of how you might implement a custom `OrthogonalGrid` class, where movement is restricted to horizontal and vertical directions:
 
 ```python
-from grid import Grid
-from tile import Tile, TileType, TileState, Layer, LayerOrientation
+from drawable import Drawable
+from tile import Tile, LayerOrientation, TileState, TileType, Layer
 from config import ROWS, WIDTH, LAYERS
 
-class DiagonalGrid(Grid):
+class OrthogonalGrid(Grid):
     """
-    A custom grid where tiles are connected diagonally, in addition to their direct neighbors.
+    Represents a grid where movement is restricted to horizontal and vertical directions.
     """
 
     def __init__(self):
         """
-        Initializes a DiagonalGrid object and builds the grid structure.
+        Initializes an OrthogonalGrid object and builds the grid structure.
         """
         super().__init__()
 
     def build_grid(self):
         """
-        Builds the diagonal grid structure with specified dimensions.
+        Builds the grid with specific dimensions and tile types.
         """
         tile_width = WIDTH
-        layers = self._create_layers(LAYERS)
+        layers = self.build_orthogonal_grid_layers(LAYERS)
 
         for layer in layers:
             grid_layer = []
@@ -284,32 +284,32 @@ class DiagonalGrid(Grid):
 
             self._grid.append(grid_layer)
 
-    def _create_layers(self, count, initial_orientation=LayerOrientation.horizontal):
+    def build_orthogonal_grid_layers(
+        self, count, initial_orientation=LayerOrientation.horizontal
+    ) -> list[Layer]:
         """
-        Creates alternating horizontal and vertical layers.
+        Creates a list of layers with alternating orientations.
 
         Args:
-            count (int): Number of layers to create.
-            initial_orientation (LayerOrientation): Orientation of the first layer.
+            count (int): The number of layers to create.
+            initial_orientation (LayerOrientation): The orientation of the first layer.
 
         Returns:
-            list[Layer]: List of layers.
+            list[Layer]: A list of layers with alternating orientations.
         """
-        layers = []
+        layers: list[Layer] = []
 
         for i in range(count + 1):
-            orientation = (
-                LayerOrientation.horizontal
-                if i % 2 == initial_orientation.value
-                else LayerOrientation.vertical
-            )
-            layers.append(Layer(i, orientation))
+            if i % 2 == initial_orientation.value:
+                layers.append(Layer(i, LayerOrientation.horizontal))
+            else:
+                layers.append(Layer(i, LayerOrientation.vertical))
 
         return layers
 
     def update_tile_neighbors(self, tile: Tile):
         """
-        Updates the neighbors of a given tile, including diagonal connectivity.
+        Updates the neighbors of a given tile based on its position and orientation.
 
         Args:
             tile (Tile): The tile whose neighbors are to be updated.
@@ -317,33 +317,46 @@ class DiagonalGrid(Grid):
         tile.clear_neighbors()
 
         row, col, index = tile.get_position()
+
+        # Same Layer
         step = 1
 
-        # Connect horizontally or vertically
-        if col < ROWS - step:
+        # Horizontal Movement
+        if col < ROWS - step and not (
+            self._grid[index][row][col + step].state == TileState.barrier
+        ):
             tile.neighbors.append(self._grid[index][row][col + step])
-        if col > step:
+
+        if col > step and not (
+            self._grid[index][row][col - step].state == TileState.barrier
+        ):
             tile.neighbors.append(self._grid[index][row][col - step])
-        if row < ROWS - step:
+
+        # Vertical Movement
+        if row < ROWS - step and not (
+            self._grid[index][row + step][col].state == TileState.barrier
+        ):
             tile.neighbors.append(self._grid[index][row + step][col])
-        if row > step:
+
+        if row > step and not (
+            self._grid[index][row - step][col].state == TileState.barrier
+        ):
             tile.neighbors.append(self._grid[index][row - step][col])
 
-        # Connect diagonally
-        if row > 0 and col > 0:
-            tile.neighbors.append(self._grid[index][row - 1][col - 1])
-        if row > 0 and col < ROWS - 1:
-            tile.neighbors.append(self._grid[index][row - 1][col + 1])
-        if row < ROWS - 1 and col > 0:
-            tile.neighbors.append(self._grid[index][row + 1][col - 1])
-        if row < ROWS - 1 and col < ROWS - 1:
-            tile.neighbors.append(self._grid[index][row + 1][col + 1])
+        # Different Layer
 
-        # Connect to layers above and below
-        if index < LAYERS:
+        # Up
+        if index < LAYERS and not (
+            self._grid[index + 1][row][col].state == TileState.barrier
+        ):
             tile.neighbors.append(self._grid[index + 1][row][col])
-        if index > 0:
+
+        # Down
+        if index > 0 and not (
+            self._grid[index - 1][row][col].state == TileState.barrier
+        ):
             tile.neighbors.append(self._grid[index - 1][row][col])
+
 ```
 
 ---
@@ -352,14 +365,14 @@ class DiagonalGrid(Grid):
 
 1. Import your new grid class:
    ```python
-   from custom_grid import DiagonalGrid
+   from custom_grid import OrthogonalGrid
    ```
 
-2. Update the `entry_point` function to use `DiagonalGrid`:
+2. Update the `entry_point` function to use `OrthogonalGrid`:
    ```python
    def entry_point():
        Initializer()
-       grid = DiagonalGrid()
+       grid = OrthogonalGrid()
        router = AStarRouter(grid)  # Or any router of your choice
        sim = RouterSimulator(grid, router)
        sim.loop()
