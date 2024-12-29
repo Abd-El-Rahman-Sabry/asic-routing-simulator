@@ -317,8 +317,8 @@ class Tile(Drawable):
         """
         Sets the color of the tile to the color associated with its layer.
         """
+        print(f"Current Layer index {self.__layer.index}")
         self.color = layer_color_map[self.__layer.index]
-
 
 
     def reset(self):

@@ -1,5 +1,5 @@
 import colors
-from config import LAYERS, ROWS, SCREEN_WIDTH
+from config import LAYERS, ROWS, SCREEN_WIDTH, VIA_COST
 from from_json import RouteLoader
 from graphics import Graphics
 from grid import Grid
@@ -63,6 +63,8 @@ class RouterSimulator:
         self.__start = None
         self.__end = None
         self.__routes = None
+
+        assert VIA_COST >= 1 
 
     def _drawer_stack(self, context=""):
         """

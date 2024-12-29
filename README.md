@@ -264,7 +264,6 @@ class DiagonalGrid(Grid):
         Initializes a DiagonalGrid object and builds the grid structure.
         """
         super().__init__()
-        self.build_grid()
 
     def build_grid(self):
         """

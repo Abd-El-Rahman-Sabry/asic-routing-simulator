@@ -1,7 +1,7 @@
 from initializer import Initializer
 from simulator import RouterSimulator
-from grid import CrossGrid
-from router import AStarRouter, MazeRouter, DijkstraRouter
+from predefined_grids import CrossGrid
+from predefined_routers import AStarRouter, MazeRouter, DijkstraRouter
 
 
 def entry_point() -> None:
@@ -33,7 +33,7 @@ def entry_point() -> None:
     sim = RouterSimulator(grid, router)
 
     # Optional: Load routes from a JSON file
-    # sim.load_route_from_json("route_2.json")
+    sim.load_route_from_json("asic-router/predefined_routes/route_2.json")
 
     # Start the simulation loop
     sim.loop()
