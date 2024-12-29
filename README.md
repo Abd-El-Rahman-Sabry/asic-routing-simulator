@@ -230,9 +230,10 @@ class GreedyBestFirstRouter(Router):
    ```
 
 ---
-### Functions to Implement:
 
 By implementing these methods, you can create a custom router to suit specific routing scenarios, whether weighted or unweighted, heuristic-based, or otherwise.
+
+### Functions to Implement in a Custom Grid:
 
 To implement a custom grid class based on the `Grid` interface, you need to define two core functions as required by the base `Grid` class: 
 
@@ -390,7 +391,7 @@ If you find any bugs or have suggestions for improvements, please open an issue 
 
 ## Acknowledgments
 
-- Thanks to all contributors and supporters who will help making this project possible.
+- Thanks to all contributors and supporters who will help making this project more valuable as an educational material.
 
 ---
 
