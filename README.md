@@ -247,7 +247,9 @@ To implement a custom grid class based on the `Grid` interface, you need to defi
 
 ### Example of a Custom Grid Class
 
-Here is an example of how you might implement a custom `OrthogonalGrid` class, where movement is restricted to horizontal and vertical directions:
+
+
+Here is an example of how you might implement a custom `OrthogonalGrid` class, where movement is restricted to horizontal and vertical directions (Manhattan directions):
 
 ```python
 from drawable import Drawable
