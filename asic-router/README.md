@@ -95,4 +95,3 @@ In a cross-grid routing scenario:
 2. **Dijkstra**: Best for grids with uniform weights or when multiple destinations are considered.
 3. **Lee's Algorithm**: Simplest to implement, effective for small grids with uniform costs.
 
-**Cross grids** are foundational in modern VLSI ASIC design, providing structured layers for efficient signal routing. Algorithms must be adapted to address the unique challenges of this environment.
