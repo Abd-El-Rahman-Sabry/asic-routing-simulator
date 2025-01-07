@@ -395,7 +395,7 @@ If you find any bugs or have suggestions for improvements, please open an issue 
 
 ---
 
-Feel free to reach out if you have any questions or need assistance with the tool. Happy learning and experimenting!
+Feel free to reach out if you have any questions or need assistance with the tool.
 
 ---
 
